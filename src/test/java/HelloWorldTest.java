@@ -25,7 +25,6 @@ public class HelloWorldTest {
         String timestamp = response.get("messages.timestamp[1]");
         System.out.println(timestamp);
 
-
 /*        if (message == null) {
             System.out.println("The key 'messages.message[1]' is absent");
         } else {
