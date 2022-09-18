@@ -7,18 +7,29 @@ public class HelloWorldTest {
     @Test
 
     public void testRestAssured() {
+        String locationHeader = "https://playground.learnqa.ru/api/long_redirect";
+        int statusCode = 301;
+        int i = 0;
+        while (statusCode !=200) {
+            i++;
+            Response response = RestAssured
+                    .given()
+                    .redirects()
+                    .follow(false)
+                    .when()
+                    .get(locationHeader)
+                    .andReturn();
+            response.prettyPrint();
 
-        Response response = RestAssured
-                .given()
-                .redirects()
-                .follow(false)
-                .when()
-                .get("https://playground.learnqa.ru/api/long_redirect")
-                .andReturn();
-        response.prettyPrint();
+            locationHeader = response.getHeader("Location");
+            statusCode = response.getStatusCode();
 
-        String locationHeader = response.getHeader("Location");
-        System.out.println(locationHeader);
-
+            System.out.println(statusCode);
+            System.out.println(locationHeader);
+            System.out.println(i);
+        }
+/*        System.out.println(locationHeader);
+        System.out.println(statusCode);
+        System.out.println(i);*/
+        }
     }
-}
