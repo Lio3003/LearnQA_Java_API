@@ -1,4 +1,4 @@
-import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import io.restassured.RestAssured;
 
@@ -10,16 +10,18 @@ public class HelloWorldTest {
     @Test
 
     public void testRestAssured() {
+        Map<String,Object> body = new HashMap<>();
+        body.put("param1", "value1");
+        body.put("param2", "value2");
 
-        JsonPath response = RestAssured
-
-                .get("https://playground.learnqa.ru/api/get_json_homework")
-                .jsonPath();
-        String message = response.get("messages.message[1]");
-        System.out.println(message);
-
-        String timestamp = response.get("messages.timestamp[1]");
-        System.out.println(timestamp);
+        Response response = RestAssured
+                .given()
+                //.body("param1=value1&param2=value2")
+                //.body("{\"param1\":\"value1\", \"param2\":\"value2\"}")
+                .body(body)
+                .post("https://playground.learnqa.ru/api/check_type")
+                .andReturn();
+        response.print();
 
     }
 }
