@@ -1,57 +1,33 @@
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import io.restassured.RestAssured;
-import io.restassured.http.Headers;
-
-import java.util.HashMap;
-import java.util.Map;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class HelloWorldTest {
     @Test
 
-    public void testRestAssured() {
-        Map<String, String> data = new HashMap<>();
-                data.put("login", "secret_login");
-                data.put("password", "secret_pass");
+    public void testFor200() {
 
-            Response responseForGet = RestAssured
-                    .given()
-                    .body(data)
-                    .when()
-                    .post("https://playground.learnqa.ru/api/get_auth_cookie")
+            Response response = RestAssured
+                    .get("https://playground.learnqa.ru/api/map")
                     .andReturn();
+          //  assertTrue(response.statusCode() == 200, "Unexpected status code");
+            assertEquals(200, response.statusCode(), "Unexpected status code");
 
-            String responseCookie = responseForGet.getCookie("auth_cookie");
 
-            Map<String, String> cookies = new HashMap<>();
-            if(responseCookie !=null){
-            cookies.put("auth_cookie", responseCookie);
-            }
+    }
+    @Test
 
-            Response responseForCheck = RestAssured
-                .given()
-                .body(data)
-                    .cookies(cookies)
-                .when()
-                .post("https://playground.learnqa.ru/api/check_auth_cookie")
+    public void testFor404() {
+
+        Response response = RestAssured
+                .get("https://playground.learnqa.ru/api/map1")
                 .andReturn();
+        //  assertTrue(response.statusCode() == 200, "Unexpected status code");
+        assertEquals(404, response.statusCode(), "Unexpected status code");
 
-            responseForCheck.print();
 
-//            System.out.println("\nPretty text:");
-//            response.prettyPrint();
-//
-//            System.out.println("\nHeaders:");
-//            Headers responseHeaders = response.getHeaders();
-//            System.out.println(responseHeaders);
-//
-//            System.out.println("\nCookies:");
-//            Map<String, String> responseCookies = response.getCookies();
-//            System.out.println(responseCookies);
-
-//        String responseCookie = response.getCookie("auth_cookie");
-//        System.out.println(responseCookie);
     }
 
         }
