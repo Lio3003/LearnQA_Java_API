@@ -1,51 +1,31 @@
 import io.restassured.RestAssured;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
-import io.restassured.http.Headers;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserAuthTest {
 
     @Test
-    public void testAuthUser(){
-
-        Map<String, String> authData = new HashMap<>();
-        authData.put("email", "vinkotov@example.com");
-        authData.put("password", "1234");
+    public void testCookie(){
 
         Response responseGetAuth = RestAssured
-                .given()
-                .body(authData)
-                .post("https://playground.learnqa.ru/api/user/login")
+
+                .get("https://playground.learnqa.ru/api/homework_cookie")
                 .andReturn();
 
-        Map<String, String> cookies = responseGetAuth.getCookies();
-        Headers headers = responseGetAuth.getHeaders();
-        int userId = responseGetAuth.jsonPath().getInt("user_id");
+                 assertTrue(responseGetAuth.getCookies().containsKey("HomeWork"), "Response doesn't have 'HomeWork' cookie");
+                 String valueCookie = responseGetAuth.getCookie("HomeWork");
+                 assertEquals(valueCookie, "hw_value", "Value HomeWork cookie not equal 'hw_value'");
 
-        assertEquals(200, responseGetAuth.statusCode(), "Unexpected status code");
-        assertTrue(cookies.containsKey("auth_sid"), "Response doesn't have 'auth_sid cookie");
-        assertTrue(headers.hasHeaderWithName("x-csrf-token"), "Response doesn't have 'x-csrf-token' header");
-        assertTrue(responseGetAuth.jsonPath().getInt("user_id") > 0, "User id must be greater than 0");
+//        if(responseGetAuth.getCookies().containsKey("HomeWork1"))
+//        {
+//            String valueCookie = responseGetAuth.getCookie("HomeWork");
+//            assertEquals(valueCookie, "hw_value", "Value HomeWork cookie not equal 'hw_value'");
+//        }
+//        else System.out.println("Response doesn't have 'HomeWork' cookie");;
 
-        JsonPath responseCheckAuth = RestAssured
-                .given()
-                .header("x-csrf-token", responseGetAuth.getHeader("x-csrf-token"))
-                .cookie("auth_sid", responseGetAuth.getCookie("auth_sid"))
-                .get("https://playground.learnqa.ru/api/user/auth")
-                .jsonPath();
 
-        int userIdOnCheck = responseCheckAuth.getInt("user_id");
-        assertTrue(userIdOnCheck > 0, "Unexpected User Id " + userIdOnCheck);
-        assertEquals(
-                userId,
-                userIdOnCheck,
-                "User id on Auth request not equal to user id from check request");
     }
 }
+
