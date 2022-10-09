@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserAuthTest {
 
-
     @Test
     public void testHeader(){
 
