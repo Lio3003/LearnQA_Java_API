@@ -6,24 +6,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserAuthTest {
 
+
     @Test
-    public void testCookie(){
+    public void testHeader(){
 
-        Response responseGetAuth = RestAssured
+        Response responseGetHeader = RestAssured
 
-                .get("https://playground.learnqa.ru/api/homework_cookie")
+                .get("https://playground.learnqa.ru/api/homework_header")
                 .andReturn();
+        //System.out.println(responseGetHeader.getHeaders());
 
-                 assertTrue(responseGetAuth.getCookies().containsKey("HomeWork"), "Response doesn't have 'HomeWork' cookie");
-                 String valueCookie = responseGetAuth.getCookie("HomeWork");
-                 assertEquals(valueCookie, "hw_value", "Value HomeWork cookie not equal 'hw_value'");
-
-//        if(responseGetAuth.getCookies().containsKey("HomeWork1"))
-//        {
-//            String valueCookie = responseGetAuth.getCookie("HomeWork");
-//            assertEquals(valueCookie, "hw_value", "Value HomeWork cookie not equal 'hw_value'");
-//        }
-//        else System.out.println("Response doesn't have 'HomeWork' cookie");;
+          assertTrue(responseGetHeader.getHeaders().hasHeaderWithName("x-secret-homework-header"), "Response doesn't have 'x-secret-homework-header'");
+          String valueHeader = responseGetHeader.getHeader("x-secret-homework-header");
+          assertEquals(valueHeader, "Some secret value", "Value 'x-secret-homework-header' not equal 'Some secret value'");
 
 
     }
