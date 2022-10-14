@@ -7,7 +7,6 @@ import java.util.Map;
 
 public class UserAuthTest {
 
-
     @ParameterizedTest
     @ValueSource(strings = {"user_agent"})
     public void testUserAgent(){
