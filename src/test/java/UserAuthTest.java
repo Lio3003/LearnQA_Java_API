@@ -1,84 +1,33 @@
 import io.restassured.RestAssured;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-import org.junit.jupiter.api.Test;
-import io.restassured.http.Headers;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class UserAuthTest {
 
-    @Test
-    public void testAuthUser(){
 
-        Map<String, String> authData = new HashMap<>();
-        authData.put("email", "vinkotov@example.com");
-        authData.put("password", "1234");
-
-        Response responseGetAuth = RestAssured
-                .given()
-                .body(authData)
-                .post("https://playground.learnqa.ru/api/user/login")
-                .andReturn();
-
-        Map<String, String> cookies = responseGetAuth.getCookies();
-        Headers headers = responseGetAuth.getHeaders();
-        int userId = responseGetAuth.jsonPath().getInt("user_id");
-
-        assertEquals(200, responseGetAuth.statusCode(), "Unexpected status code");
-        assertTrue(cookies.containsKey("auth_sid"), "Response doesn't have 'auth_sid cookie");
-        assertTrue(headers.hasHeaderWithName("x-csrf-token"), "Response doesn't have 'x-csrf-token' header");
-        assertTrue(responseGetAuth.jsonPath().getInt("user_id") > 0, "User id must be greater than 0");
-
-        JsonPath responseCheckAuth = RestAssured
-                .given()
-                .header("x-csrf-token", responseGetAuth.getHeader("x-csrf-token"))
-                .cookie("auth_sid", responseGetAuth.getCookie("auth_sid"))
-                .get("https://playground.learnqa.ru/api/user/auth")
-                .jsonPath();
-
-        int userIdOnCheck = responseCheckAuth.getInt("user_id");
-        assertTrue(userIdOnCheck > 0, "Unexpected User Id " + userIdOnCheck);
-        assertEquals(
-                userId,
-                userIdOnCheck,
-                "User id on Auth request not equal to user id from check request");
-    }
     @ParameterizedTest
-    @ValueSource(strings = {"cookie", "headers"})
-    public void testNegativeAuthUser(String condition){
-        Map<String, String> authData = new HashMap<>();
-        authData.put("email", "vinkotov@example.com");
-        authData.put("password", "1234");
+    @ValueSource(strings = {"user_agent"})
+    public void testUserAgent(){
+        Map<String, String> userAgentData = new HashMap<>();
+        userAgentData.put("user_agent", "Mozilla/5.0 (iPad; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1");
+        userAgentData.put("_ym_uid", "1663500239248447327");
+        userAgentData.put("_ym_d", "1663500239");
+        userAgentData.put("HomeWork", "hw_value");
+        userAgentData.put("MyCookie", "12345");
 
-        Response responseGetAuth = RestAssured
+        Response responseUAData = RestAssured
                 .given()
-                .body(authData)
-                .post("https://playground.learnqa.ru/api/user/login")
+                .header("user_agent", userAgentData)
+                .cookie("_ym_uid",userAgentData)
+                .cookie("_ym_d", userAgentData)
+                .cookie("HomeWork", userAgentData)
+                .cookie("MyCookie", userAgentData)
+                .get("https://playground.learnqa.ru/ajax/api/user_agent_check")
                 .andReturn();
 
-        Map<String, String> cookies = responseGetAuth.getCookies();
-        Headers headers = responseGetAuth.getHeaders();
-        RequestSpecification spec = RestAssured.given();
-        spec.baseUri("https://playground.learnqa.ru/api/user/auth");
+        String platform = responseUAData.getBody().prettyPrint();}
 
-        if (condition.equals("cookie")){
-            spec.cookie("auth_sid", cookies.get("auth_sid"));
-        } else if (condition.equals("headers")) {
-            spec.header("x-csrf-token", headers.get("x-csrf-token"));
-        }
-        else {
-            throw new IllegalArgumentException("Condition value is known: " + condition);
-        }
-
-        JsonPath responseForCheck = spec.get().jsonPath();
-        assertEquals(0, responseForCheck.getInt("user_id"), "user_id should be 0 for unauth request");
     }
-}
