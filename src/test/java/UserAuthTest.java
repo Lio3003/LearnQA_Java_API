@@ -50,6 +50,7 @@ public class UserAuthTest {
                 "User id on Auth request not equal to user id from check request");
     }
 
+
     @ParameterizedTest
     @ValueSource(strings = {"cookie", "headers"})
     public void testNegativeAuthUser(String condition){
