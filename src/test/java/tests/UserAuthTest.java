@@ -86,12 +86,10 @@ public class UserAuthTest extends BaseTestCase {
                 .get("https://playground.learnqa.ru/ajax/api/user_agent_check")
                 .jsonPath();
 
-        assertEquals(responseUAData.getString("user_agent"), userAgent,"UserAgent " + responseUAData.getString("user_agent") + " is differs from " + userAgent);
-        assertEquals(responseUAData.getString("platform"), platform,"Platform " + responseUAData.getString("platform") + " is differs from " + platform);
-        assertEquals(responseUAData.getString("browser"), browser,"Browser " + responseUAData.getString("browser") + " is differs from " + browser);
-        assertEquals(responseUAData.getString("device"), device,"Device " + responseUAData.getString("device") + " is differs from " + device);
+        assertEquals(userAgent, responseUAData.getString("user_agent"),"UserAgent " + responseUAData.getString("user_agent") + " is differs from expected " + userAgent);
+        assertEquals(platform, responseUAData.getString("platform"), "Platform " + responseUAData.getString("platform") + " is differs from expected " + platform);
+        assertEquals(browser, responseUAData.getString("browser"), "Browser " + responseUAData.getString("browser") + " is differs from expected " + browser);
+        assertEquals(device, responseUAData.getString("device"), "Device " + responseUAData.getString("device") + " is differs from expected " + device);
 
     }
-
-
 }
