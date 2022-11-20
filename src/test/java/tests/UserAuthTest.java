@@ -14,6 +14,7 @@ import lib.Assertions;
 import java.util.HashMap;
 import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class UserAuthTest extends BaseTestCase {
     String cookie;
@@ -90,6 +91,35 @@ public class UserAuthTest extends BaseTestCase {
         assertEquals(platform, responseUAData.getString("platform"), "Platform " + responseUAData.getString("platform") + " is differs from expected " + platform);
         assertEquals(browser, responseUAData.getString("browser"), "Browser " + responseUAData.getString("browser") + " is differs from expected " + browser);
         assertEquals(device, responseUAData.getString("device"), "Device " + responseUAData.getString("device") + " is differs from expected " + device);
+
+    }
+    @Test
+    public void testLongTimeJob() throws InterruptedException {
+        JsonPath responseGetToken = RestAssured
+                .given()
+                .get("https://playground.learnqa.ru/ajax/api/longtime_job")
+                .jsonPath();
+
+        String token = responseGetToken.get("token");
+        int seconds = responseGetToken.get("seconds");
+        //System.out.print(seconds);
+
+        JsonPath responsePutToken = RestAssured
+                .given()
+                .get("https://playground.learnqa.ru/ajax/api/longtime_job?token=" + token)
+                .jsonPath();
+
+        assertEquals("Job is NOT ready", responsePutToken.getString("status"), "Status before job " + responsePutToken.getString("status") + " - is incorrect");
+
+        Thread.sleep(seconds*1000);
+
+        JsonPath responseAfterJob = RestAssured
+                .given()
+                .get("https://playground.learnqa.ru/ajax/api/longtime_job?token=" + token)
+                .jsonPath();
+
+        assertNotNull(responseAfterJob.get("result"), "Result does not exist");
+        assertEquals("Job is ready", responseAfterJob.getString("status"), "Status after job " + responseAfterJob.getString("status") + " - is incorrect");
 
     }
 }

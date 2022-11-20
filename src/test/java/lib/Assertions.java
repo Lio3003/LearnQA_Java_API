@@ -1,6 +1,7 @@
 package lib;
 
 import io.restassured.response.Response;
+
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,7 +15,17 @@ public class Assertions {
 
 
     }
+
+
     public static void assertResponseTextEquals(Response Response, String expectedAnswer){
+        assertEquals(
+                expectedAnswer,
+                Response.asString(),
+                "Response text is not as expected"
+        );
+    }
+
+    public static void assertJsonHasShortUsername(Response Response, String expectedAnswer){
         assertEquals(
                 expectedAnswer,
                 Response.asString(),
@@ -38,6 +49,7 @@ public class Assertions {
         for (String expectedFieldName : expectedFieldNames ) {
             Assertions.assertJsonHasField(Response, expectedFieldName);        }
     }
+
 
     public static void assertJsonHasNotField(Response Response, String unexpectedFieldName){
         Response.then().assertThat().body("$", not(hasKey(unexpectedFieldName)));
