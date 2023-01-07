@@ -117,7 +117,7 @@ private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
         JsonPath responsePutToken = apiCoreRequests.makeGetRequestLongTimeJob("https://playground.learnqa.ru/ajax/api/longtime_job?token=" + token);
         assertEquals("Job is NOT ready", responsePutToken.getString("status"), "Status before job " + responsePutToken.getString("status") + " - is incorrect");
 
-        Thread.sleep(seconds*10);
+        Thread.sleep(seconds*1000);
 
         JsonPath responseAfterJob = apiCoreRequests.makeGetRequestLongTimeJob("https://playground.learnqa.ru/ajax/api/longtime_job?token=" + token);
         assertNotNull(responseAfterJob.get("result"), "Result does not exist");
