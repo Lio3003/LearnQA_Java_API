@@ -24,7 +24,6 @@ public class UserAuthTest extends BaseTestCase {
     String cookie;
     String header;
     int userIdOnAuth;
-    //добавить это тоже перед тестами!!!
 private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 
     @BeforeEach
