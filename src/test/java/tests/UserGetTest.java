@@ -38,7 +38,7 @@ public class UserGetTest extends BaseTestCase {
         authData.put("email", "vinkotov@example.com");
         authData.put("password", "1234");
 
-        Response responseGetAuth = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/login",
+        Response responseGetAuth = apiCoreRequests.makePostRequestAuthData("https://playground.learnqa.ru/api/user/login",
                         authData);
 
         Response responseUserData = apiCoreRequests.makeGetRequest("https://playground.learnqa.ru/api/user/2",
@@ -58,7 +58,7 @@ public class UserGetTest extends BaseTestCase {
         authData.put("email", "vinkotov@example.com");
         authData.put("password", "1234");
 
-        Response responseGetAuth = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/login",
+        Response responseGetAuth = apiCoreRequests.makePostRequestAuthData("https://playground.learnqa.ru/api/user/login",
                         authData);
 
         Response responseUserData = apiCoreRequests.makeGetRequest("https://playground.learnqa.ru/api/user/1",

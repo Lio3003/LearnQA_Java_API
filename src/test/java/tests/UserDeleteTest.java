@@ -30,7 +30,7 @@ public class UserDeleteTest extends BaseTestCase {
         authData.put("email", "vinkotov@example.com");
         authData.put("password", "1234");
 
-        Response responseGetAuth = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/login",
+        Response responseGetAuth = apiCoreRequests.makePostRequestAuthData("https://playground.learnqa.ru/api/user/login",
                         authData);
 
         //DELETE
@@ -67,7 +67,7 @@ public class UserDeleteTest extends BaseTestCase {
         authData.put("email", userData.get("email"));
         authData.put("password", userData.get("password"));
 
-        Response responseGetAuth = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/login",
+        Response responseGetAuth = apiCoreRequests.makePostRequestAuthData("https://playground.learnqa.ru/api/user/login",
                         authData);
 
         //DELETE
@@ -112,7 +112,7 @@ public class UserDeleteTest extends BaseTestCase {
         authData.put("email", userData1.get("email"));
         authData.put("password", userData1.get("password"));
 
-        Response responseGetAuth1 = apiCoreRequests.makePostRequest("https://playground.learnqa.ru/api/user/login",
+        Response responseGetAuth1 = apiCoreRequests.makePostRequestAuthData("https://playground.learnqa.ru/api/user/login",
                         authData);
 
         //DELETE USER1
