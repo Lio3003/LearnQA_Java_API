@@ -10,7 +10,6 @@ import lib.ApiCoreRequests;
 import lib.BaseTestCase;
 import lib.DataGenerator;
 import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +17,6 @@ import java.util.Map;
 @Feature("Edit user")
 public class UserEditTest extends BaseTestCase {
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
-
     @Test
  public void testEditJustCreatedTest(){
 //GENERATE USER
