@@ -22,6 +22,7 @@ public class UserEditTest extends BaseTestCase {
     @Description("This test checks successfully edition username")
     @DisplayName("Positive test edit user")
     @Severity(SeverityLevel.CRITICAL)
+    @Flaky
  public void testEditJustCreatedTest(){
         //GENERATE USER
         Map<String, String> userData = DataGenerator.getRegistrationData();
