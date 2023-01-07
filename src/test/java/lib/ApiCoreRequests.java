@@ -47,6 +47,23 @@ public class ApiCoreRequests {
                 .andReturn();
     }
 
+    @Step("Make a POST-userData-request")
+    public Response makePostRequestUserData(String url, Map<String, String> userData){
+        return given()
+                .filter(new AllureRestAssured())
+                .body(userData)
+                .post(url)
+                .andReturn();
+    }
+
+    @Step("Make a POST-request without one field")
+    public Response makePostRequestUserDataWithoutOneField(String url, Map<String, String> userDataWithoutOneField){
+        return given()
+                .filter(new AllureRestAssured())
+                .body(userDataWithoutOneField)
+                .post(url)
+                .andReturn();
+    }
     @Step("Make a POST-userData-request with Json")
     public JsonPath makePostRequestJson(String url, Map<String, String> userData){
         return given()
